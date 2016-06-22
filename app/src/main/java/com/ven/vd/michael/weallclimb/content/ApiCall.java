@@ -9,12 +9,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 /**
  * Created by Michael on 22-6-2016.
  */
 public class ApiCall {
     private static ApiCall instance = null;
     private Context context;
+    private ApiResult apiDelegate;
 
     protected ApiCall(){
     }
@@ -30,7 +34,9 @@ public class ApiCall {
         context = newContext;
     }
 
-    public void get(String route){
+    public void get(String route, final ApiResult apiResult){
+        apiDelegate = apiResult;
+
         String url = new StringBuilder()
                 .append(Settings.API_URL)
                 .append(route)
@@ -40,13 +46,19 @@ public class ApiCall {
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Log.v("WAC", "top");
-                    Log.v("WAC", "Response is: "+ response.substring(0,500));
+                    Log.v("WAC", "API callback");
+                    Log.v("WAC", "Response is: "+ response);
+                    try {
+                        JSONArray json = new JSONArray(response);
+                        apiDelegate.apiResult(json);
+                    }catch (JSONException e) {
+                        Log.e("JSONException", "Error: " + e.toString());
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.v("WAC", "error");
+                    Log.e("WAC", "error");
                 }
             }
         );

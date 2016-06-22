@@ -40,12 +40,6 @@ public class RouteListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     //private RouteContent routeContent;
 
-    /*
-        dit moet er in!
-        http://stackoverflow.com/questions/13196234/simple-parse-json-from-url-on-android-and-display-in-listview
-        http://stackoverflow.com/questions/9605913/how-to-parse-json-in-android
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
