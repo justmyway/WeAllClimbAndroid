@@ -10,4 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.ven.vd.michael.weallclimb.RouteListActivity"
-    tools:listitem="@layout/route_list_content" />
+    tools:listitem="@layout/route_list_content"
+    tools:showIn="@layout/activity_route_list" />

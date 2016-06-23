@@ -14,12 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import com.ven.vd.michael.weallclimb.content.ApiCall;
 import com.ven.vd.michael.weallclimb.content.RouteContent;
-import com.ven.vd.michael.weallclimb.dummy.DummyContent;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class RouteListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
-    //private RouteContent routeContent;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,18 @@ public class RouteListActivity extends AppCompatActivity {
 
         /* providing routes */
         ApiCall.getInstance().setContext(RouteListActivity.this);
-        RouteContent routeContent = new RouteContent();
+        RouteContent routeContent = new RouteContent(this);
 
+        /* toolbar */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        /* loading screen */
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.VISIBLE);
+
+        /* floating action button */
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +69,10 @@ public class RouteListActivity extends AppCompatActivity {
             }
         });
 
-        View recyclerView = findViewById(R.id.route_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        /* view */
+//        View recyclerView = findViewById(R.id.route_list);
+//        assert recyclerView != null;
+//        setupRecyclerView((RecyclerView) recyclerView);
 
         if (findViewById(R.id.route_detail_container) != null) {
             // The detail container view will be present only in the
@@ -75,17 +83,25 @@ public class RouteListActivity extends AppCompatActivity {
         }
     }
 
+    public void routesLoaded(){
+        Log.v("WAC","in routes loaded");
+        View recyclerView = findViewById(R.id.route_list);
+        assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
+        spinner.setVisibility(View.GONE);
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(RouteContent.ROUTES));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<RouteContent.Route> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
+        public SimpleItemRecyclerViewAdapter(List<RouteContent.Route> routes) {
+            mValues = routes;
         }
 
         @Override
@@ -98,8 +114,8 @@ public class RouteListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mValues.get(position).grade);
+            holder.mContentView.setText(mValues.get(position).name);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,7 +148,7 @@ public class RouteListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public RouteContent.Route mItem;
 
             public ViewHolder(View view) {
                 super(view);

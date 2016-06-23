@@ -1,6 +1,9 @@
 package com.ven.vd.michael.weallclimb.content;
 
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.ven.vd.michael.weallclimb.RouteListActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +24,10 @@ public class RouteContent implements ApiResult {
 
     public static int COUNT = 0;
 
-    public RouteContent(){
+    public static RouteListActivity currentActivity;
+
+    public RouteContent(RouteListActivity activity){
+        currentActivity = activity;
         ApiCall.getInstance().get("routes", this);
     }
 
@@ -39,6 +45,7 @@ public class RouteContent implements ApiResult {
             }
         }
         COUNT = arrayLength;
+        currentActivity.routesLoaded();
     }
 
     public Route createRouteItem(JSONObject jsonObject){
@@ -54,7 +61,7 @@ public class RouteContent implements ApiResult {
 
         try {
             name = jsonObject.getString("Name");
-            grade = jsonObject.getString("Grade");
+            grade = jsonObject.getJSONObject("Grade").getString("France");
             climber = jsonObject.getString("Climber");
             id = jsonObject.getString("_id");
             rope = jsonObject.getString("Rope");
