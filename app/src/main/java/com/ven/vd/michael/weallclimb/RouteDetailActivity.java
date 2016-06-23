@@ -1,14 +1,18 @@
 package com.ven.vd.michael.weallclimb;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import com.ven.vd.michael.weallclimb.content.RouteContent;
 
 /**
  * An activity representing a single Route detail screen. This
@@ -18,6 +22,8 @@ import android.view.MenuItem;
  */
 public class RouteDetailActivity extends AppCompatActivity {
 
+    RouteContent.Route currentRoute;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,14 +31,26 @@ public class RouteDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
+        Log.v("WAC", "Item id");
+        Log.v("WAC", RouteDetailFragment.ARG_ITEM_ID);
+        Log.v("WAC", getIntent().getStringExtra(RouteDetailFragment.ARG_ITEM_ID));
+
+        currentRoute = RouteContent.ROUTE_MAP.get(getIntent().getStringExtra(RouteDetailFragment.ARG_ITEM_ID));
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        if(currentRoute.location != null){
+            Log.v("WAC", currentRoute.location.latitude.toString());
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?daddr="+currentRoute.location.latitude.toString()+","+currentRoute.location.latitude.toString()));
+                    startActivity(intent);
+                }
+            });
+        }else{
+            fab.hide();
+        }
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
