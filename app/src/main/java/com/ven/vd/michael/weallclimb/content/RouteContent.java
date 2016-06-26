@@ -1,5 +1,7 @@
 package com.ven.vd.michael.weallclimb.content;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -28,7 +30,26 @@ public class RouteContent implements ApiResult {
 
     public RouteContent(RouteListActivity activity){
         currentActivity = activity;
-        ApiCall.getInstance().get("routes", this);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(currentActivity);
+        Log.v("WAC", "sharedPref");
+        Log.v("WAC", sharedPref.toString());
+
+        Log.v("WAC", sharedPref.getAll().toString());
+        Boolean ownRoutes = sharedPref.getBoolean("show_own_routes", true);
+        String apiKey = sharedPref.getString("api_key", "");
+        Log.v("WAC", ownRoutes.toString());
+        Log.v("WAC", apiKey);
+
+        String url = "routes";
+
+        if(apiKey != null && !apiKey.isEmpty()){
+            if(ownRoutes){
+                url = "users/"+apiKey+"/routes";
+            }
+        }
+
+        ApiCall.getInstance().get(url, this);
     }
 
     public void apiResult(JSONArray output) {

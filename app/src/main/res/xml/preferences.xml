@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/settings_header"
+        android:key="settings_header">
+
+        <CheckBoxPreference
+            android:key="show_own_routes"
+            android:title="@string/show_own_routes"
+            android:summary="@string/show_own_routes_summ"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="api_key"
+            android:title="@string/api_key"
+            android:summary="@string/api_key_summ"
+            android:defaultValue="@string/api_key_default" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

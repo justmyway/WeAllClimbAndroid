@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">We All Climb</string>
     <string name="title_route_detail">Route Details</string>
+    <string name="show_own_routes">My routes</string>
+    <string name="settings_header">Settings</string>
+    <string name="show_own_routes_summ">Only show my own climbed routes</string>
+    <string name="api_key">App Key</string>
+    <string name="api_key_summ">Jouw unieke app sleutel om gegevens uit te wisselen</string>
+    <string name="api_key_default"></string>
 </resources>

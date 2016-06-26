@@ -31,15 +31,12 @@ public class RouteDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        Log.v("WAC", "Item id");
-        Log.v("WAC", RouteDetailFragment.ARG_ITEM_ID);
         Log.v("WAC", getIntent().getStringExtra(RouteDetailFragment.ARG_ITEM_ID));
 
         currentRoute = RouteContent.ROUTE_MAP.get(getIntent().getStringExtra(RouteDetailFragment.ARG_ITEM_ID));
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if(currentRoute.location != null){
-            Log.v("WAC", currentRoute.location.latitude.toString());
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

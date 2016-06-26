@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ven.vd.michael.weallclimb.content.RouteContent;
-import com.ven.vd.michael.weallclimb.dummy.DummyContent;
 
 /**
  * A fragment representing a single Route detail screen.

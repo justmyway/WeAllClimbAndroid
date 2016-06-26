@@ -1,8 +1,11 @@
 package com.ven.vd.michael.weallclimb;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,9 +46,11 @@ public class RouteListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("WAC", "dit is een tesje list to load");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_list);
+
+        /* setting settings */
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         /* providing routes */
         if(RouteContent.COUNT == 0) {
@@ -53,33 +58,34 @@ public class RouteListActivity extends AppCompatActivity {
             RouteContent routeContent = new RouteContent(this);
         }
 
-        Log.v("WAC", "dit is een tesje list to load1");
-
         /* toolbar */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        Log.v("WAC", "dit is een tesje list to load2");
-
         /* loading screen */
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.VISIBLE);
 
-        Log.v("WAC", "dit is een tesje list to load3");
-
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
 
         /* floating action button */
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-//
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v("WAC", "show settings");
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new SettingsFragment()).commit();
+            }
+        });
+
         if(RouteContent.COUNT > 0) {
             routesLoaded();
         }
@@ -94,15 +100,10 @@ public class RouteListActivity extends AppCompatActivity {
     }
 
     public void routesLoaded(){
-        Log.v("WAC","in routes loaded");
         View recyclerView = findViewById(R.id.route_list);
-        Log.v("WAC","in routes loaded1");
         assert recyclerView != null;
-        Log.v("WAC","in routes loaded2");
         setupRecyclerView((RecyclerView) recyclerView);
-        Log.v("WAC","in routes loaded3");
         spinner.setVisibility(View.GONE);
-        Log.v("WAC","in routes loaded4");
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {

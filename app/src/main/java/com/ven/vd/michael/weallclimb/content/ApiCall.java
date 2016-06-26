@@ -1,6 +1,8 @@
 package com.ven.vd.michael.weallclimb.content;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -19,6 +21,7 @@ public class ApiCall {
     private static ApiCall instance = null;
     private Context context;
     private ApiResult apiDelegate;
+    private String reqRoute;
 
     protected ApiCall(){
     }
@@ -36,6 +39,7 @@ public class ApiCall {
 
     public void get(String route, final ApiResult apiResult){
         apiDelegate = apiResult;
+        reqRoute = route;
 
         String url = new StringBuilder()
                 .append(Settings.API_URL)
@@ -58,7 +62,22 @@ public class ApiCall {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("WAC", "error");
+                    Log.e("WAC", "error" + error);
+                    new AlertDialog.Builder(context)
+                            .setTitle("No data")
+                            .setMessage("Server could nog get the data, app key wrong? try again?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    get(reqRoute, apiDelegate);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
             }
         );
