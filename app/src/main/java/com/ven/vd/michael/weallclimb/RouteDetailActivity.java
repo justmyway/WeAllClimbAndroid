@@ -44,7 +44,7 @@ public class RouteDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("http://maps.google.com/maps?daddr="+currentRoute.location.longitude.toString()+","+currentRoute.location.latitude.toString()));
+                            Uri.parse("http://maps.google.com/maps?daddr="+currentRoute.location.latitude.toString()+","+currentRoute.location.longitude.toString()));
                     startActivity(intent);
                 }
             });
