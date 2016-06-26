@@ -33,9 +33,6 @@ public class RouteContent implements ApiResult {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(currentActivity);
         Log.v("WAC", "sharedPref");
-        Log.v("WAC", sharedPref.toString());
-
-        Log.v("WAC", sharedPref.getAll().toString());
         Boolean ownRoutes = sharedPref.getBoolean("show_own_routes", true);
         String apiKey = sharedPref.getString("api_key", "");
         Log.v("WAC", ownRoutes.toString());

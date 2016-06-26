@@ -70,6 +70,7 @@ public class RouteListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RouteContent.COUNT = 0;
                 finish();
                 startActivity(getIntent());
             }
